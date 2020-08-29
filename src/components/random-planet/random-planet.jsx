@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 
 import SwapiService from '../../services/swapi-service.js';
+import Spinner from "../spinner/spinner.jsx";
+import ErrorIndicator from "../error-indicator/error-indicator.jsx";
 
 import './random-planet.css';
 
@@ -9,32 +11,61 @@ export default class RandomPlanet extends Component {
     super();
 
     this.state = {
-      planet: {}
+      planet: {},
+      loading: true,
     };
 
     this.updatePlanet();
+    this.swapiService = new SwapiService();
   }
 
-  swapiService = new SwapiService();
-
   onPlanetLoaded = (planet) => {
-    this.setState({planet});
+    this.setState({
+      planet,
+      loading: false,
+      error: false,
+  });
   };
+
+  onError = (err) => {
+    this.setState({
+      error: true,
+      loading: false,
+    });
+  }
 
   updatePlanet() {
     const id = Math.floor(Math.random() * 25) + 2;
     this.swapiService
       .getPlanet(id)
-      .then(this.onPlanetLoaded);
+      .then(this.onPlanetLoaded)
+      .catch(this.onError);
   }
 
   render() {
+    const {planet, loading, error} = this.state;
+    const hasData = !(loading || error);
+    const errorMessage = error ? <ErrorIndicator /> : null;
+    const spinner = loading ? <Spinner /> : null;
+    const content = hasData ? <PlanetView planet={planet} /> : null;
 
-    const {planet: {id, name, population,
-      rotationPeriod, diameter}} = this.state;
-console.log(this.state)
     return (
       <div className="random-planet jumbotron rounded">
+        {errorMessage}
+        {spinner}
+        {content}
+      </div>
+
+    );
+  }
+}
+
+const PlanetView = (props) => {
+  const {planet} = props;
+  const {id, name, population, rotationPeriod, diameter} = planet;
+
+  return (
+    <React.Fragment>
         <img className="planet-image"
           src={`https://starwars-visualguide.com/assets/img/planets/${id}.jpg`} />
         <div>
@@ -54,8 +85,7 @@ console.log(this.state)
             </li>
           </ul>
         </div>
-      </div>
+    </React.Fragment>
+  );
+};
 
-    );
-  }
-}
