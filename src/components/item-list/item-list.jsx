@@ -5,7 +5,6 @@ import Spinner from "../spinner/spinner.jsx";
 import './item-list.css';
 
 export default class ItemList extends Component {
-  swapiService = new SwapiService;
 
   state = {
     peopleList: null,
@@ -13,24 +12,27 @@ export default class ItemList extends Component {
   }
 
   componentDidMount() {
-    this.swapiService
-    .getAllPeople()
-    .then((peopleList) => {
+    const {getData} = this.props;
+
+    getData()
+    .then((itemList) => {
       this.setState({
-        peopleList
+        itemList
       });
     });
   }
 
   renderItems(arr) {
-    return arr.map(({id, name}) => {
+    return arr.map((item) => {
+      const {id} = item;
+      const label = this.props.renderItem(item);
       return (
         <li
         onClick={() => this.personOnItemSelected(id)}
         key={id}
         className="list-group-item"
         >
-          {name}
+          {label}
         </li>
       );
     });
