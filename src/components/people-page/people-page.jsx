@@ -1,18 +1,19 @@
 import React, {Component} from 'react';
 
 import ItemList from '../item-list/item-list.jsx';
-import PersonDetails from '../person-details/person-details.jsx';
-import ErrorIndicator from '../error-indicator/error-indicator.jsx';
+import ItemDetails from '../item-details/item-details.jsx';
+import Row from '../row/row.jsx';
+import ErrorBoundry from "../error-boundry/error-boundry.jsx";
 
 import './people-page.css';
 import SwapiService from "../../services/swapi-service.js";
 
-class PeoplePage extends Component {
+export default class PeoplePage extends Component {
 
   swapiService = new SwapiService();
 
   state = {
-    selectedPerson: 3
+    selectedPerson: 11
   };
 
   onPersonSelected = (selectedPerson) => {
@@ -35,7 +36,7 @@ class PeoplePage extends Component {
 
     const personDetails = (
       <ErrorBoundry>
-        <PersonDetails personId={this.state.selectedPerson} />
+        <ItemDetails itemId={this.state.selectedPerson} />
       </ErrorBoundry>
     );
 
@@ -44,5 +45,3 @@ class PeoplePage extends Component {
     );
   }
 }
-
-export default PeoplePage;
