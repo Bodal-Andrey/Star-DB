@@ -1,11 +1,10 @@
-import React, {Component} from 'react';
+import React from 'react';
 
 import ErrorButton from '../error-button/error-button.jsx';
-import SwapiService from '../../services/swapi-service.js';
 
 import './item-details.css';
 
-const Record = ({ item, field, label }) => {
+const Record = ({item, field, label}) => {
   return (
     <li className="list-group-item">
       <span className="term">{label}</span>
@@ -18,10 +17,7 @@ export {
   Record
 };
 
-
-export default class ItemDetails extends Component {
-
-  swapiService = new SwapiService();
+export default class ItemDetails extends React.Component {
 
   state = {
     item: null,
@@ -33,13 +29,15 @@ export default class ItemDetails extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (this.props.itemId !== prevProps.itemId) {
+    if (this.props.itemId !== prevProps.itemId ||
+      this.props.getData !== prevProps.getData ||
+      this.props.getImageUrl !== prevProps.getImageUrl) {
       this.updateItem();
     }
   }
 
   updateItem() {
-    const { itemId, getData, getImageUrl } = this.props;
+    const {itemId, getData, getImageUrl} = this.props;
     if (!itemId) {
       return;
     }
@@ -55,13 +53,12 @@ export default class ItemDetails extends Component {
 
   render() {
 
-    const { item, image } = this.state;
+    const {item, image} = this.state;
     if (!item) {
       return <span>Select a item from a list</span>;
     }
 
-    const { id, name, gender,
-              birthYear, eyeColor } = item;
+    const {name} = item;
 
     return (
       <div className="item-details card">
@@ -74,7 +71,7 @@ export default class ItemDetails extends Component {
           <ul className="list-group list-group-flush">
             {
               React.Children.map(this.props.children, (child) => {
-                return React.cloneElement(child, { item });
+                return React.cloneElement(child, {item});
               })
             }
           </ul>

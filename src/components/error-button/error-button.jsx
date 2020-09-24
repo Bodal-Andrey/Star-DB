@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
+import React from 'react';
 
 import './error-button.css';
 
-export default class ErrorButton extends Component {
+export default class ErrorButton extends React.Component {
 
   state = {
     renderError: false
