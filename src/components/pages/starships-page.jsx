@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { StarshipDetails, StarshipList } from '../sw-components';
-import Row from '../row';
+import Row from '../row/row.jsx';
 
 export default class StarshipsPage extends Component {
 

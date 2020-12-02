@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { PersonDetails, PersonList } from '../sw-components';
-import Row from '../row';
+import Row from '../row/row.jsx';
 
 export default class PeoplePage extends Component {
 

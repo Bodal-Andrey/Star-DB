@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import {withData} from '../hoc-helpers/with-data.jsx';
+import {withData} from '../hoc-helpers/index.js';
 import SwapiService from '../../services/swapi-service.js';
 import './item-list.css';
 
